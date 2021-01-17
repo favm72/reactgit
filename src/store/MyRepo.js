@@ -1,19 +1,12 @@
-import { createContext } from "react";
-import { Subject } from "rxjs";
-import { getCommits } from "../api/gitAPI";
-
-export const MyContext = createContext()
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
-class MyRepo {
+export default class MyRepo {
 	onChange = new Subject()
 	current = {
 		loading: false,
 		commits: [],
 		error: false,
 		message: ""	
-	}
+    }    
+    delay = ms => new Promise(res => setTimeout(res, ms));
 	async fillCommits() {
 		try {			
 			this.current.loading = true
@@ -32,15 +25,4 @@ class MyRepo {
 			this.onChange.next({ ...this.current })
 		}
 	}
-}
-
-export const MyProvider = ({ children }) => {	
-	
-	const myRepo = new MyRepo()
-	
-	return (
-		<MyContext.Provider value={{ myRepo }}>
-			{ children }
-		</MyContext.Provider>
-	)
 }

@@ -40,3 +40,21 @@
 	margin: 10px 0px;
 	color: #283396;
 }
+
+.wwrap {
+	max-width: 100px;
+	word-wrap: break-word;
+}
+
+.container.mybar {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.container.mybar a {
+	color: white;
+	font-weight: bold;
+	padding: 5px 10px;
+}

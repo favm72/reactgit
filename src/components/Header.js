@@ -1,13 +1,15 @@
 import React, { Fragment } from 'react';
-import { Navbar, NavbarBrand, NavLink } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
+import { Navbar, NavbarBrand } from 'reactstrap';
 
 const Header = (props) => {
 	return (
 		<Fragment>			
 			<Navbar dark fixed="top">
-				<div className="container">
-					<NavbarBrand href="/home">REACTGIT</NavbarBrand>
-					<NavLink href="/commits">Commits</NavLink>
+				<div className="container mybar">
+					<NavbarBrand>REACTGIT</NavbarBrand>
+					<NavLink to="/home">Home</NavLink>
+					<NavLink to="/commits">Commits</NavLink>
 				</div>
 			</Navbar>
 		</Fragment>
