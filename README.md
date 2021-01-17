@@ -22,6 +22,14 @@ It will display a generic Home page with a navbar, a footer and a Jumbotron.
 ---
 It will display a table with the list of commits found for this repository, but there is a simple form that allows the user to search for data from another repository.
 
+## Working on Local Repository Steps
+---
+Run the following commands
+- `git clone https://github.com/favm72/reactgit.git`
+- Open the project directory `cd reactgit`
+- Once there, install all the dependencies with `npm install`
+- Finally, run the app locally with `npm start`
+
 ## DEMO
 ---
 [Click Here to test the Site](https://reactgit.s3-us-west-1.amazonaws.com/index.html).
