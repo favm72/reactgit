@@ -35,3 +35,8 @@
 	min-height: 100vh;
 	justify-content: space-between
 }
+
+.mytitle {
+	margin: 10px 0px;
+	color: #283396;
+}
