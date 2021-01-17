@@ -1,11 +1,14 @@
 import './App.css';
-import Main from './components/Main';
 import { MyProvider } from './context/MyContext';
+import { BrowserRouter } from 'react-router-dom';
+import Routes from './components/Routes';
 
 function App() {
 	return (
 		<MyProvider>
-			<Main />
+			<BrowserRouter>
+				<Routes />
+			</BrowserRouter>
 		</MyProvider>		
 	);
 }

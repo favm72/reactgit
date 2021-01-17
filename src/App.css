@@ -29,7 +29,9 @@
 }
 
 .mycontainer {
-	margin-top: 56px;
-	display: flex;
+	padding-top: 56px;
+	display: flex;	
 	flex-direction: column;
+	min-height: 100vh;
+	justify-content: space-between
 }
