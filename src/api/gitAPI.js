@@ -1,9 +1,9 @@
 export const owner = "favm72"
 export const repository = "reactgit"
-export const baseURL = `https://api.github.com/repos/${owner}/${repository}/`
+export const baseURL = `https://api.github.com/repos/`
 
-export const getCommits = async () => {    
-    const response = await fetch(`${baseURL}commits`)
+export const getCommits = async (owner, repository, branch) => {    
+    const response = await fetch(`${baseURL}${owner}/${repository}/commits?sha=${branch}`)
     const commits = await response.json()
     return commits   
 }

@@ -1,20 +1,29 @@
+import { Subject } from "rxjs";
+import { getCommits, owner, repository } from "../api/gitAPI";
+
 export default class MyRepo {
 	onChange = new Subject()
 	current = {
 		loading: false,
 		commits: [],
 		error: false,
-		message: ""	
+		message: "",
+		owner: owner,
+		repository: repository,
+		branch: "master"	
     }    
-    delay = ms => new Promise(res => setTimeout(res, ms));
+    delay(ms) {
+        return new Promise(res => setTimeout(res, ms))
+    }
 	async fillCommits() {
 		try {			
 			this.current.loading = true
-			this.current.error = false
-			console.log(this.current)
+			this.current.error = false			
 			this.onChange.next({ ...this.current })						
-			await delay(1500)
-			let commits = await getCommits()
+			await this.delay(1500)
+			let commits = await getCommits(this.current.owner, this.current.repository, this.current.branch)
+			if (commits.message != null)
+				throw new Error(commits.message)			
 			this.current.commits = commits
 			this.current.loading = false
 			this.onChange.next({ ...this.current })

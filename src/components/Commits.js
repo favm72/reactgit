@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
-import { owner, repository } from '../api/gitAPI';
 import { MyContext } from '../context/MyContext';
+import MyForm from './MyForm';
 
-const useRepoHook = () => {
-    const { myRepo } = useContext(MyContext)
-    const [state, setState] = useState(myRepo.current)    
+const useRepoHook = (myRepo) => {
 
-    useEffect(() => {        
-        let suscription = myRepo.onChange.subscribe(newState => {                 
+    const [state, setState] = useState(myRepo.current)
+
+    useEffect(() => {
+        let suscription = myRepo.onChange.subscribe(newState => {
             setState(newState)
         })
         myRepo.fillCommits()
@@ -20,30 +20,47 @@ const useRepoHook = () => {
     return [state, setState]
 }
 
-
 const Commits = (props) => {
 
-    const [state] = useRepoHook()
+    const { myRepo } = useContext(MyContext)
+    const [state] = useRepoHook(myRepo)
+    const onSubmit = (data) => {
+        console.log(JSON.stringify(data, null, 2))
+        myRepo.current.owner = data.owner
+        myRepo.current.repository = data.repo
+        myRepo.current.branch = data.branch
+        myRepo.fillCommits()
+    }
 
     if (state.loading) {
-        console.log("loading")
-        return (<div className="container">...Loading</div>)
+        return (
+            <div className="container loading">
+                <div className="spinner-border text-info"></div>
+                <div>...Loading</div>
+            </div>
+        )
     } else if (state.error) {
-        console.log("error")
-        return (<div className="container">{state.message}</div>)
+        return (
+            <Fragment>
+                <div className="container">
+                    <MyForm onSubmit={onSubmit} default={{ owner: state.owner, repo: state.repository, branch: state.branch }} />
+                </div>
+                <div className="container error">
+                    {state.message}
+                </div>
+            </Fragment>
+        )
     } else {
-        console.log("default")
         return (
             <div className="container">
-                <h3 className="mytitle">Commits from {owner}/{repository}</h3>
+                <h3 className="mytitle">Commits from {state.owner}/{state.repository} in branch {state.branch}</h3>
+                <MyForm onSubmit={onSubmit} default={{ owner: state.owner, repo: state.repository, branch: state.branch }} />
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>DATE</th>
-                            <th>TIME</th>
-                            <th>NAME</th>
-                            <th>EMAIL</th>
+                            <th>DATETIME</th>
+                            <th>AUTHOR</th>
                             <th>MESSAGE</th>
                         </tr>
                     </thead>
@@ -52,10 +69,14 @@ const Commits = (props) => {
                             state.commits.map(x =>
                                 <tr key={x.sha}>
                                     <td className="wwrap">{x.sha}</td>
-                                    <td>{new Date(x.commit.author.date).toLocaleDateString()}</td>
-                                    <td>{new Date(x.commit.author.date).toLocaleTimeString()}</td>
-                                    <td>{x.commit.author.name}</td>
-                                    <td>{x.commit.author.email}</td>
+                                    <td>
+                                        {new Date(x.commit.author.date).toLocaleDateString()}
+                                        <br />{new Date(x.commit.author.date).toLocaleTimeString()}
+                                    </td>
+                                    <td>
+                                        {x.commit.author.name}
+                                        <br />{x.commit.author.email}
+                                    </td>
                                     <td>{x.commit.message}</td>
                                 </tr>
                             )
@@ -65,7 +86,6 @@ const Commits = (props) => {
             </div>
         )
     }
-    
 }
 
 export default Commits
